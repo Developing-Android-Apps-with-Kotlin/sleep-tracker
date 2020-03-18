@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import se.stylianosgakis.sleeptracker.database.SleepNight
 import se.stylianosgakis.sleeptracker.databinding.ListItemSleepNightBinding
 
-class SleepNightAdapter :
-    ListAdapter<SleepNight, SleepNightAdapter.QualityViewHolder>(SleepNightDiffCallback()) {
+class SleepNightAdapter(
+    private val clickListener: SleepNightListener
+) : ListAdapter<SleepNight, SleepNightAdapter.QualityViewHolder>(SleepNightDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         QualityViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: QualityViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 
     class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
@@ -29,8 +30,9 @@ class SleepNightAdapter :
     class QualityViewHolder private constructor(
         val binding: ListItemSleepNightBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: SleepNight) {
+        fun bind(item: SleepNight, clickListener: SleepNightListener) {
             binding.apply {
+                this.clickListener = clickListener
                 sleep = item
                 executePendingBindings()
             }
@@ -45,4 +47,10 @@ class SleepNightAdapter :
             }
         }
     }
+}
+
+class SleepNightListener(
+    val clickListener: (sleepId: Long) -> Unit
+) {
+    fun onCLick(night: SleepNight) = clickListener(night.nightId)
 }

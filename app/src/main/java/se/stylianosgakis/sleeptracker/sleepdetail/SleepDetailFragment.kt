@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.android.trackmysleepquality.sleepdetail.SleepDetailFragmentArgs
-import com.example.android.trackmysleepquality.sleepdetail.SleepDetailFragmentDirections
+import se.stylianosgakis.sleeptracker.sleepdetail.SleepDetailFragmentArgs
+import se.stylianosgakis.sleeptracker.sleepdetail.SleepDetailFragmentDirections
 import se.stylianosgakis.sleeptracker.R
 import se.stylianosgakis.sleeptracker.database.SleepDatabase
 import se.stylianosgakis.sleeptracker.databinding.FragmentSleepDetailBinding

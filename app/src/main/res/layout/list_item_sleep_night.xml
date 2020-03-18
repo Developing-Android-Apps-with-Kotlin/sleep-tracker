@@ -10,12 +10,16 @@
         <variable
             name="sleep"
             type="se.stylianosgakis.sleeptracker.database.SleepNight" />
+        <variable
+            name="clickListener"
+            type="se.stylianosgakis.sleeptracker.sleeptracker.SleepNightListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:onClick="@{() -> clickListener.onCLick(sleep)}">
 
         <ImageView
             android:id="@+id/quality_image"

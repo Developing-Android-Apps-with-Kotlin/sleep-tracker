@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import se.stylianosgakis.sleeptracker.R
 import se.stylianosgakis.sleeptracker.database.SleepDatabase
@@ -27,11 +30,14 @@ class SleepTrackerFragment : Fragment() {
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
-        val sleepNightAdapter = SleepNightAdapter()
+        val sleepNightAdapter = SleepNightAdapter(SleepNightListener { nightId ->
+            Toast.makeText(activity, "$nightId", Toast.LENGTH_LONG).show()
+        })
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             sleepTrackerViewModel = viewModel
             sleepRecyclerView.apply {
+                layoutManager = LinearLayoutManager(activity)
                 adapter = sleepNightAdapter
             }
         }
