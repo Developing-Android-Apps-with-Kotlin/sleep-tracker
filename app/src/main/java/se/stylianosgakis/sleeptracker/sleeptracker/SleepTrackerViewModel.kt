@@ -1,7 +1,6 @@
 package se.stylianosgakis.sleeptracker.sleeptracker
 
 import android.app.Application
-import android.text.Spanned
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,16 +11,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import se.stylianosgakis.sleeptracker.database.SleepDatabaseDao
 import se.stylianosgakis.sleeptracker.database.SleepNight
-import se.stylianosgakis.sleeptracker.formatNights
 
 class SleepTrackerViewModel(
     val database: SleepDatabaseDao, application: Application
 ) : AndroidViewModel(application) {
     private val tonightLiveData = MutableLiveData<SleepNight?>()
-    private val nightsLiveData = database.getAllNights()
-    val nightsString: LiveData<Spanned> =
+    val nightsLiveData = database.getAllNights()
+    val nightsString: LiveData<String> =
         Transformations.map(nightsLiveData) { nights ->
-            formatNights(nights, application.resources)
+            nights.toString()
         }
     private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
     val navigateToSleepQuality: LiveData<SleepNight> = _navigateToSleepQuality
