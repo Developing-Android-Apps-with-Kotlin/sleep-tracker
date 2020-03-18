@@ -10,11 +10,11 @@ import se.stylianosgakis.sleeptracker.databinding.ListItemSleepNightBinding
 
 class SleepNightAdapter(
     private val clickListener: SleepNightListener
-) : ListAdapter<SleepNight, SleepNightAdapter.QualityViewHolder>(SleepNightDiffCallback()) {
+) : ListAdapter<SleepNight, SleepNightAdapter.SleepNightViewHolder>(SleepNightDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        QualityViewHolder.from(parent)
+        SleepNightViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: QualityViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SleepNightViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item, clickListener)
     }
@@ -27,7 +27,7 @@ class SleepNightAdapter(
             oldItem == newItem
     }
 
-    class QualityViewHolder private constructor(
+    class SleepNightViewHolder private constructor(
         val binding: ListItemSleepNightBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SleepNight, clickListener: SleepNightListener) {
@@ -39,11 +39,11 @@ class SleepNightAdapter(
         }
 
         companion object {
-            fun from(parent: ViewGroup): QualityViewHolder {
+            fun from(parent: ViewGroup): SleepNightViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemSleepNightBinding
                     .inflate(layoutInflater, parent, false)
-                return QualityViewHolder(binding)
+                return SleepNightViewHolder(binding)
             }
         }
     }
