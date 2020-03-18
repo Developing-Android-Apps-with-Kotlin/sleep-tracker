@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import se.stylianosgakis.sleeptracker.R
 import se.stylianosgakis.sleeptracker.database.SleepDatabase
@@ -30,14 +28,12 @@ class SleepTrackerFragment : Fragment() {
         val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
-        val sleepNightAdapter = SleepNightAdapter(SleepNightListener { nightId ->
-            Toast.makeText(activity, "$nightId", Toast.LENGTH_LONG).show()
-        })
+        val sleepNightAdapter = SleepNightAdapter(SleepNightListener(itemClickedListener))
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             sleepTrackerViewModel = viewModel
             sleepRecyclerView.apply {
-                layoutManager = LinearLayoutManager(activity)
+                layoutManager = GridLayoutManager(activity, 3)
                 adapter = sleepNightAdapter
             }
         }
@@ -55,6 +51,15 @@ class SleepTrackerFragment : Fragment() {
                 viewModel.doneNavigating()
             }
         })
+        viewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer { nightId ->
+            nightId?.let {
+                this.findNavController().navigate(
+                    SleepTrackerFragmentDirections
+                        .actionSleepTrackerFragmentToSleepDetailFragment(nightId)
+                )
+                viewModel.doneNavigating()
+            }
+        })
         viewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer { showSnackbar ->
             if (showSnackbar) {
                 Snackbar.make(
@@ -66,5 +71,9 @@ class SleepTrackerFragment : Fragment() {
             }
         })
         return binding.root
+    }
+
+    private val itemClickedListener: (nightId: Long) -> Unit = { nightId ->
+        viewModel.onSleepNightClicked(nightId)
     }
 }
