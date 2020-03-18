@@ -15,6 +15,8 @@ import se.stylianosgakis.sleeptracker.R
 import se.stylianosgakis.sleeptracker.database.SleepDatabase
 import se.stylianosgakis.sleeptracker.databinding.FragmentSleepTrackerBinding
 
+private const val COLUMN_COUNT = 4
+
 class SleepTrackerFragment : Fragment() {
     private val viewModel by viewModels<SleepTrackerViewModel> {
         val application = requireNotNull(this.activity).application
@@ -29,11 +31,18 @@ class SleepTrackerFragment : Fragment() {
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
         val sleepNightAdapter = SleepNightAdapter(SleepNightListener(itemClickedListener))
+        val gridLayoutManager = GridLayoutManager(activity, COLUMN_COUNT)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when (position) {
+                0 -> COLUMN_COUNT
+                else -> 1
+            }
+        }
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             sleepTrackerViewModel = viewModel
             sleepRecyclerView.apply {
-                layoutManager = GridLayoutManager(activity, 3)
+                layoutManager = gridLayoutManager
                 adapter = sleepNightAdapter
             }
         }
